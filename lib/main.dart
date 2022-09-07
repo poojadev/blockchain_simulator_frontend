@@ -5,25 +5,28 @@ import 'package:blockchain_world/accounts/controller/bloc/accoun_bloc/AccountsBl
 import 'package:blockchain_world/accounts/controller/bloc/events/AccountsEvents.dart';
 import 'package:blockchain_world/accounts/controller/bloc/repository/AccountRepository.dart';
 import 'package:blockchain_world/accounts/view/CreateAccounts.dart';
-import 'package:blockchain_world/accounts/view/ShowAccountTransactions.dart';
 import 'package:blockchain_world/home/view/HomeView.dart';
-import 'package:blockchain_world/market_data/ListOfAllAssets/Screen/AllAssetList.dart';
-import 'package:blockchain_world/market_data/controller/events/MarketDataEvents.dart';
-import 'package:blockchain_world/market_data/controller/market_data_bloc/MarketDataBloc.dart';
-import 'package:blockchain_world/market_data/controller/repository/MarketDataRepository.dart';
-import 'package:blockchain_world/market_data/controller/states/MarketDataStates.dart';
+import 'package:blockchain_world/nodes/bloc/block_bloc/NodeBloc.dart';
+import 'package:blockchain_world/nodes/bloc/block_repository/NodeRepository.dart';
+import 'package:blockchain_world/nodes/view/NodesDetailsScreen.dart';
+import 'package:blockchain_world/settings/view/Settings.dart';
 import 'package:blockchain_world/transactions/bloc/events/TransactionEvents.dart';
 import 'package:blockchain_world/transactions/bloc/transaction_bloc/TransactionBloc.dart';
 import 'package:blockchain_world/transactions/bloc/transaction_repository/TransactionRepository.dart';
+import 'package:blockchain_world/transactions/view/TransactionList.dart';
 import 'package:blockchain_world/util/AppBlocObserver.dart';
-import 'package:blockchain_world/util/common/Argument.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:responsive_builder/responsive_builder.dart';
+import 'package:responsive_framework/responsive_wrapper.dart';
 
+import 'accounts/model/AllAccounts/AllAccountsPOJO.dart';
 import 'blocks/bloc/block_bloc/BlockBloc.dart';
 import 'blocks/bloc/block_repository/BlockRepository.dart';
+import 'nodes/bloc/events/NodeEvents.dart';
 import 'util/common/MultipleArguments.dart';
 import 'blocks/view/BlockDeatails.dart';
 
@@ -37,10 +40,15 @@ import 'blocks/view/GetAllBlocks.dart';
 
 late GetChainPOJO? getChainPOJO;
 late String nodePublicKey;
+late AllAccountsPOJO accountsPOJO;
+GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey=GlobalKey<ScaffoldMessengerState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
+  ]);
   // if (kIsWeb) {
   //   await Firebase.initializeApp(
   //     options: const FirebaseOptions(
@@ -78,7 +86,7 @@ void main() async {
           BlocProvider(
             create: (context) =>
             AccountsBloc(AccountRepositoryImpl())
-              ..add(AccountInit()),
+              ..add(GetAllAccount()),
           ),
           BlocProvider(
             create: (context) =>
@@ -90,22 +98,40 @@ void main() async {
             TransactionBloc(TransactionRepositoryImpl())
               ..add(TransactionsInitial()),
           ),
+
           BlocProvider(
             create: (context) =>
-            MarketDataBloc(MarketDataRepositoryImpl())
-              ..add(MarketDataInit()),
+            NodeBloc(NodeRepositoryImpl())
+              ..add(NodeStarted()),
           ),
         ],
 
         child:
 
         //  runApp(
-
         MaterialApp(
+          scaffoldMessengerKey: scaffoldMessengerKey, // add this
+
+          // builder: (context, child) => ResponsiveWrapper.builder(
+          //     child,
+          //     maxWidth: 1200,
+          //     minWidth: 480,
+          //     defaultScale: true,
+          //     breakpoints: [
+          //       const ResponsiveBreakpoint.resize(480, name: MOBILE),
+          //       const ResponsiveBreakpoint.autoScale(800, name: TABLET),
+          //       const ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+          //     ],
+          //     background: Container(color: Color(0xFFF5F5F5))),
+
           //initialRoute: '/AddTransactions' ,
           initialRoute: '/HomeView' ,
 
           onGenerateRoute: (RouteSettings settings) {
+            ResponsiveSizingConfig.instance.setCustomBreakpoints(
+              const ScreenBreakpoints(desktop: 800, tablet: 550, watch: 200),
+            );
+
 
             //ProductArguments? args;
             // final  args= settings.arguments as ProductArguments ;
@@ -127,17 +153,6 @@ void main() async {
                   settings: settings,
                 );
               break;
-              case '/ShowNodeTransactions':
-                SingleArgument? nodePublicKey = args as SingleArgument?;
-
-                return
-                  PageTransition(
-                    child: ShowNodeTransactionsState(nodePublicKey: SingleArgument(key: nodePublicKey!.key,
-                        mined_block_count: nodePublicKey.mined_block_count,node_index: nodePublicKey.node_index)),
-                    type: PageTransitionType.leftToRight,
-                    settings: settings,
-                  );
-                break;
 
               case '/GetAllBlocks':
 
@@ -150,7 +165,7 @@ void main() async {
                 break;
 
 
-              case '/CreateNodes':
+              case '/CreateAccounts':
 
                 return
                   PageTransition(
@@ -160,9 +175,15 @@ void main() async {
                   );
                 break;
 
+              case '/NodeDetails':
 
-
-
+                 return
+                   PageTransition(
+                     child:NodeDetails(),
+                     type: PageTransitionType.leftToRight,
+                     settings: settings,
+                   );
+                 break;
 
 
               case '/HomeScreen':
@@ -179,20 +200,32 @@ void main() async {
 
                 break;
 
-              case '/AllAssetList':
+              case '/Settings':
                 ArgumentsPOJO? argumentsPOJO = args as ArgumentsPOJO?;
 
                 return
 
 
                   PageTransition(
-                    child:AllAssetList(),
+                    child:Settings(),
                     type: PageTransitionType.leftToRight,
                     settings: settings,
                   );
 
                 break;
+              case '/AddTransactions':
+                ArgumentsPOJO? argumentsPOJO = args as ArgumentsPOJO?;
 
+                return
+
+
+                  PageTransition(
+                    child:TransactionList(),
+                    type: PageTransitionType.leftToRight,
+                    settings: settings,
+                  );
+
+                break;
 
 
               case '/BlockDetails':
@@ -203,10 +236,10 @@ void main() async {
 
                   PageTransition(
                     child:BlockDetailSate(argumentsPOJO:ArgumentsPOJO
-                      (index: argumentsPOJO!.index,message: argumentsPOJO!.message,
-                        previous_hash: argumentsPOJO!.previous_hash,current_block_hask: argumentsPOJO!.current_block_hask,
-                        proof: argumentsPOJO!.proof,
-                        timestamp: argumentsPOJO.timestamp,transactions: argumentsPOJO!.transactions
+                      (index: argumentsPOJO!.index,message: argumentsPOJO.message,
+                        previous_hash: argumentsPOJO.previous_hash,current_block_hask: argumentsPOJO.current_block_hask,
+                        proof: argumentsPOJO.proof,
+                        timestamp: argumentsPOJO.timestamp,transactions: argumentsPOJO.transactions
                     )),
                     type: PageTransitionType.leftToRight,
                     settings: settings,
@@ -243,6 +276,7 @@ void main() async {
         )
     )),
     blocObserver: AppBlocObserver(),
+
   );
   //
 

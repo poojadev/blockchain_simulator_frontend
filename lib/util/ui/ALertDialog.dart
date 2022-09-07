@@ -20,7 +20,8 @@ Alerts(BuildContext context, String message) {
               child:   OutlinedButton(
 
                 onPressed: () async {
-                  Navigator.of(context).pop();
+                  Navigator.of(context, rootNavigator: true).pop();
+
                 },
               style: OutlinedButton.styleFrom(
                   elevation: 6,

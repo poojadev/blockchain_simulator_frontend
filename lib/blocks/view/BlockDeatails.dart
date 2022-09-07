@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../util/ui/sizeConfig.dart';
@@ -43,8 +44,6 @@ class _BlockDetailsState extends State<BlockDetailSate> {
   @override
     Widget build(BuildContext context) {
 
-    final Orientation orientation = MediaQuery.of(context).orientation;
-    final bool isLandscape = orientation == Orientation.landscape;
       return
         Scaffold(
 
@@ -57,23 +56,44 @@ class _BlockDetailsState extends State<BlockDetailSate> {
 
 
 
-                    return  SingleChildScrollView(
+                    return  Container(
+
 
                       child:  Container(
-                        color: Colors.blueGrey,
 
-                        height: SizeConfig.heightMultiplier*80,
-                        width: isLandscape?  MediaQuery.of(context).size.width
-
-                            :SizeConfig.widthMultiplier*100,
+                        height: MediaQuery.of(context).size.height,
+                        width: MediaQuery.of(context).size.width,
                         padding: const EdgeInsets.all(15),
 
-                        child:  Column(children: [
-            Card(
-              color: Colors.white38,
+                       child: Card(
+                    color: Colors.white,
+                    elevation: 11,
 
-              elevation: 4,
-              child: Column(children: [
+                        child:  ListView(
+                            //direction: Axis.vertical,
+
+                            children: [
+
+
+
+
+            Container(
+
+
+                height:
+
+
+                        MediaQuery.of(context).size.height*0.50,
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.all(30),
+
+                child:
+
+               Container(
+                 color: Colors.white,
+
+             // elevation:11,
+              child: Wrap(children: [
                 Container(
                   alignment: Alignment.topLeft,
                   padding: EdgeInsets.all(5.0),
@@ -83,7 +103,7 @@ class _BlockDetailsState extends State<BlockDetailSate> {
                   padding: EdgeInsets.all(5.0),
                   child: Text("Block Number",
 
-                    textScaleFactor: 1.3,
+                    textScaleFactor: 1.1,
                     style: const TextStyle(color: Colors.black54),
 
                     //  textAlign: TextAlign.center,
@@ -93,9 +113,9 @@ class _BlockDetailsState extends State<BlockDetailSate> {
                   alignment: Alignment.topLeft,
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    widget.argumentsPOJO.index.toString() ?? 'No Sender ',
+                    widget.argumentsPOJO.index.toString(),
 
-                    textScaleFactor: 1.3,
+                    textScaleFactor: 1.1,
                     style: const TextStyle(color: Colors.black),
 
                     //  textAlign: TextAlign.center,
@@ -107,7 +127,7 @@ class _BlockDetailsState extends State<BlockDetailSate> {
                   padding: EdgeInsets.all(5.0),
                   child: Text("Nonce",
 
-                    textScaleFactor: 1.3,
+                    textScaleFactor: 1.1,
                     style: const TextStyle(color: Colors.black54),
 
                     //  textAlign: TextAlign.center,
@@ -117,9 +137,9 @@ class _BlockDetailsState extends State<BlockDetailSate> {
                   alignment: Alignment.topLeft,
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    widget.argumentsPOJO.proof.toString() ?? 'No receiver ',
+                    widget.argumentsPOJO.proof.toString() ,
 
-                    textScaleFactor: 1.3,
+                    textScaleFactor: 1.1,
                     style: const TextStyle(color: Colors.black),
 
                     //  textAlign: TextAlign.center,
@@ -130,7 +150,7 @@ class _BlockDetailsState extends State<BlockDetailSate> {
                   padding: EdgeInsets.all(5.0),
                   child: Text("Timestamp",
 
-                    textScaleFactor: 1.3,
+                    textScaleFactor: 1.1,
                     style: const TextStyle(color: Colors.black54),
 
                     //  textAlign: TextAlign.center,
@@ -140,9 +160,9 @@ class _BlockDetailsState extends State<BlockDetailSate> {
                   alignment: Alignment.topLeft,
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    widget.argumentsPOJO.timestamp.toString() ?? 'No Sender ',
+                    widget.argumentsPOJO.timestamp.toString() ,
 
-                    textScaleFactor: 1.3,
+                    textScaleFactor: 1.1,
                     style: const TextStyle(color: Colors.black),
 
                     //  textAlign: TextAlign.center,
@@ -153,7 +173,7 @@ class _BlockDetailsState extends State<BlockDetailSate> {
                   padding: EdgeInsets.all(5.0),
                   child: Text("Previous Block Hash ",
 
-                    textScaleFactor: 1.3,
+                    textScaleFactor: 1.1,
                     style: const TextStyle(color: Colors.black54),
 
                     //  textAlign: TextAlign.center,
@@ -163,10 +183,9 @@ class _BlockDetailsState extends State<BlockDetailSate> {
                   alignment: Alignment.topLeft,
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    widget.argumentsPOJO.previous_hash.toString() ??
-                        'No Sender ',
+                    widget.argumentsPOJO.previous_hash.toString() ,
 
-                    textScaleFactor: 1.3,
+                    textScaleFactor: 1.1,
                     style: const TextStyle(color: Colors.black),
 
                     //  textAlign: TextAlign.center,
@@ -177,7 +196,7 @@ class _BlockDetailsState extends State<BlockDetailSate> {
                   padding: EdgeInsets.all(5.0),
                   child: Text("Current Block Hash",
 
-                    textScaleFactor: 1.3,
+                    textScaleFactor: 1.1,
                     style: const TextStyle(color: Colors.black54),
 
                     //  textAlign: TextAlign.center,
@@ -187,164 +206,136 @@ class _BlockDetailsState extends State<BlockDetailSate> {
                   alignment: Alignment.topLeft,
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    widget.argumentsPOJO.current_block_hask.toString() ??
-                        'No Sender ',
+                    widget.argumentsPOJO.current_block_hask.toString() ,
 
-                    textScaleFactor: 1.3,
+                    textScaleFactor: 1.1,
                     style: const TextStyle(color: Colors.black),
 
                     //  textAlign: TextAlign.center,
                   ),
                 ),
               ]),
-            ),
+            ) ),
+                              const Divider(
+                                color: Colors.black12,
+                                thickness: 1.0,
+                              ),
+
+
 
                           Container(
-                            alignment: Alignment.topLeft,
-                            padding: const EdgeInsets.all(5.0),
-                            child: const Text("Transactions",
+                              height:   kIsWeb?     MediaQuery.of(context).size.height*0.45:SizeConfig.heightMultiplier*40,
 
-                              textScaleFactor: 1.3,
-                              style: TextStyle(color: Colors.black54),
-
-                              //  textAlign: TextAlign.center,
-                            ),
-                          ),
-            Container(
-                alignment: Alignment.topLeft,
-
-                height: SizeConfig.heightMultiplier*30,
-                width: isLandscape?  MediaQuery.of(context).size.width:SizeConfig.widthMultiplier*100,
-                color: Colors.blueGrey,
+                              width: MediaQuery.of(context).size.width,
+                              padding: EdgeInsets.only(left: 20,right: 20),
 
 
-                child:
-            ListView.builder(
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemCount: widget.argumentsPOJO.transactions.length,
-                itemBuilder: (context, index) {
-                  print("INSIDE transactions in ");
-                  var userDocument = widget.argumentsPOJO.transactions;
+                              child: ListView(children: [
 
-                  print(userDocument[index]);
+                                Container(
+                                  alignment: Alignment.topLeft,
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: const Text("Transactions",
 
+                                    textScaleFactor: 1.1,
+                                    style: TextStyle(color: Colors.black),
 
-                  return GestureDetector(
-                      onTap: () {
-                        // ArgumentsPOJO argumentPOJOI=
-                        // ArgumentsPOJO(index: getAllBlocks!.chain[index].index,
-                        //
-                        //     message: "New transaction added",
-                        //     previous_hash: getAllBlocks!.chain[index].previous_hash,
-                        //     proof: getAllBlocks!.chain[index].proof,
-                        //     timestamp: getAllBlocks!.chain[index].timestamp,
-                        //     transactions: getAllBlocks!.chain[index].transactions);
-                        //
-                        //
-                        //
-                        // Navigator.pushNamed(context,
-                        //     BlockDetail.routeName,
-                        //     arguments: argumentPOJOI);
-                        //
-                      },
-                      child: Container(
-                          height: SizeConfig.heightMultiplier * 20,
-                        width: SizeConfig.widthMultiplier*80,
-
-                        child: Stack(children: <Widget>[
-                          Container(
-
-
-
-
-                              child: Card(
-                                color: Colors.white38,
-
-                                elevation: 10,
-                                child: ListView(children: [
-
-                                  Container(
-                                    alignment: Alignment.topLeft,
-                                    padding: EdgeInsets.all(5.0),
-                                    child: const Text("Sender",
-
-                                      textScaleFactor: 1.3,
-                                      style: TextStyle(color: Colors.black54),
-
-                                      //  textAlign: TextAlign.center,
-                                    ),
+                                    //  textAlign: TextAlign.center,
                                   ),
-                                  Container(
-                                    alignment: Alignment.topLeft,
-                                    padding: EdgeInsets.all(5.0),
-                                    child: Text(
-                                      widget.argumentsPOJO.transactions[index]["sender"],
+                                ),
+                                          //Expanded(
 
-                                      textScaleFactor: 1.3,
-                                      style:
-                                          const TextStyle(color: Colors.black),
+                                          // child: SingleChildScrollView(
+                                          // scrollDirection: Axis.vertical,
+                                          // child:
+                                          Container(
 
-                                      //  textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                  Container(
-                                    alignment: Alignment.topLeft,
-                                    padding: EdgeInsets.all(5.0),
-                                    child: Text("Receiver",
+                                            color: Colors.white,
 
-                                      textScaleFactor: 1.3,
-                                      style: const TextStyle(color: Colors.black54),
 
-                                      //  textAlign: TextAlign.center,
-                                    ),
-                                  ),
+                                           // elevation:11,
+                                            margin: EdgeInsets.all(10),
 
-                                  Container(
-                                    alignment: Alignment.topLeft,
-                                    padding: EdgeInsets.all(5.0),
-                                    child: Text(
-                                      widget.argumentsPOJO.transactions[index]["receiver"]
-                                              .toString() ??
-                                          'No receiver ',
 
-                                      textScaleFactor: 1.3,
-                                      style:
-                                          const TextStyle(color: Colors.black),
 
-                                      //  textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                  Container(
-                                    alignment: Alignment.topLeft,
-                                    padding: EdgeInsets.all(5.0),
-                                    child: const Text("Amount",
-                                      textScaleFactor: 1.3,
-                                      style: TextStyle(color: Colors.black54),
-                                      //  textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                  Container(
-                                    alignment: Alignment.topLeft,
-                                    padding: EdgeInsets.all(5.0),
-                                    child: Text(
-                                      widget.argumentsPOJO.transactions[index]["amount"]
-                                              .toString() ??
-                                          'No Sender ',
+                                            child:
 
-                                      textScaleFactor: 1.3,
-                                      style:
-                                          const TextStyle(color: Colors.black),
+                                          DataTable(
+                                            columnSpacing: 15.0,
+                                            // border: TableBorder.all(  width: 1,color: Colors.black,style: BorderStyle.solid
+                                            // ),
+                                            columns: const [
+                                              DataColumn(label: Text('Sender')),
+                                              DataColumn(label: Text('Receiver')),
+                                              DataColumn(label: Text('Signature')),
+                                              DataColumn(label: Text('Coins')),
+                                            ],
+                                            rows: List.generate(widget.argumentsPOJO.transactions.length,
+                                                    (index) {
+                                                  final y = widget.argumentsPOJO.transactions[index].tx.sender;
 
-                                      //  textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                ]),
-                              ))
-                        ]),
-                      ));
-                }))
-          ]),
+                                                  final x =
+                                                      widget.argumentsPOJO.transactions[index].tx.receiver;
+                                                  final v = widget.argumentsPOJO.transactions[index].signature;
+
+                                                  final z =
+                                                      widget.argumentsPOJO.transactions[index].tx.is_mining_reward==1?"Mining reward  " +
+
+
+
+                                                  widget.argumentsPOJO.transactions[index].tx.amount.toString():widget.argumentsPOJO.transactions[index].tx.amount;
+
+                                                  return
+
+
+
+                                                    DataRow(cells: [
+
+
+                                                    DataCell(Container(width:MediaQuery.of(context).size.width*0.20,
+                                                        padding: const EdgeInsets.all(7),
+
+
+
+                                                        child: Text(y))),
+
+                                                      DataCell(Container(width:MediaQuery.of(context).size.width*0.20,
+                                                          padding: const EdgeInsets.all(7),
+
+
+
+                                                          child: Text(v))),
+                                                    DataCell(
+                                                        Container(
+                                                      width:MediaQuery.of(context).size.width*0.20,
+                                                            padding: EdgeInsets.all(7),
+
+
+                                                            child: Text(x.toString()))),
+
+                                                    DataCell(
+                                                        Container(
+                                                            padding: EdgeInsets.all(7),
+
+                                                            child: Text(z.toString())))
+                                                  ]);
+                                                }),
+                                          ),
+
+
+
+                                          )
+
+
+
+                                        ]))
+
+
+
+
+
+
+          ]) ),
 
 
 

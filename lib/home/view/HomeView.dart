@@ -1,10 +1,12 @@
 import 'package:blockchain_world/accounts/view/CreateAccounts.dart';
 import 'package:blockchain_world/blocks/view/GetAllBlocks.dart';
-import 'package:blockchain_world/transactions/Screen/TransactionList.dart';
+import 'package:blockchain_world/nodes/bloc/block_repository/NodeRepository.dart';
+import 'package:blockchain_world/settings/view/Settings.dart';
+import 'package:blockchain_world/transactions/view/TransactionList.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
-import '../../market_data/ListOfAllAssets/Screen/AllAssetList.dart';
+import '../../nodes/view/NodesDetailsScreen.dart';
 import '../../util/ui/sizeConfig.dart';
 
 class HomeView extends StatefulWidget {
@@ -21,7 +23,7 @@ class _HomeViewState extends State<HomeView>
 
   @override
   void initState() {
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 5, vsync: this);
     super.initState();
   }
 
@@ -31,31 +33,13 @@ class _HomeViewState extends State<HomeView>
     _tabController.dispose();
   }
 
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Likes',
-      style: optionStyle,
-    ),
-    Text(
-      'Search',
-      style: optionStyle,
-    ),
-    Text(
-      'Profile',
-      style: optionStyle,
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: LayoutBuilder(builder: (context, constraints) {
       return OrientationBuilder(builder: (context, orientation) {
+        //NodeRepositoryImpl().createNode();
+        NodeRepositoryImpl().connectNodeOne();
+        NodeRepositoryImpl().connectNodeTwo();
         SizeConfig().init(constraints, orientation);
 
         return SingleChildScrollView(
@@ -70,6 +54,7 @@ class _HomeViewState extends State<HomeView>
                         // give the tab bar a height [can change hheight to preferred height]
                         SizedBox(height: 20,),
                         Container(
+                          margin: EdgeInsets.all(10),
                           height: 55,
                           decoration: BoxDecoration(
                             color: Colors.grey[300],
@@ -84,14 +69,14 @@ class _HomeViewState extends State<HomeView>
                               borderRadius: BorderRadius.circular(
                                 25.0,
                               ),
-                              color: Colors.green,
+                              color: Colors.black87,
                             ),
                             labelColor: Colors.white,
                             unselectedLabelColor: Colors.black,
                             tabs: const [
                               // first tab [you can add an icon using the icon property]
                               Tab(
-                                text: 'Nodes',
+                                text: 'Accounts',
 
                               ),
 
@@ -100,10 +85,15 @@ class _HomeViewState extends State<HomeView>
                                 text: 'Transactions',
                               ),
                               Tab(
+                                text: 'Nodes',
+
+                              ),
+
+                              Tab(
                                 text: 'Blocks',
                               ),
                               Tab(
-                                text: 'Market Data',
+                                text: 'Settings',
                               ),
                             ],
                           ),
@@ -120,9 +110,11 @@ class _HomeViewState extends State<HomeView>
 
                               // second tab bar view widget
                              TransactionList(),
+                              NodeDetails(),
 
                               GetAllBlocks(),
-                              AllAssetList()
+                             Settings()
+                             // AllAssetList()
                             ],
                           ),
                         ),

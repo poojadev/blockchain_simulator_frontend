@@ -17,12 +17,12 @@ class CreateWalletPOJO
 }
     */
 
-    late double amount;
-    late String coinname;
-    late int gaslimit;
-    late String message;
-    late String privateKey;
-    late String publicKey;
+    late int? amount;
+    late String? coinname;
+    late int? gaslimit;
+    late String? message;
+    late String? privateKey;
+    late String? publicKey;
     CreateWalletPOJO(this.amount,this.coinname,this.message,this.gaslimit,this.privateKey,this.publicKey);
     factory CreateWalletPOJO.fromJson(Map<String, dynamic> json) => _$CreateWalletPOJOFromJson(json);
     Map<String, dynamic> toJson() => _$CreateWalletPOJOToJson(this);

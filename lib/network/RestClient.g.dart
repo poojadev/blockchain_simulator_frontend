@@ -10,7 +10,7 @@ part of 'RestClient.dart';
 
 class _RestClient implements RestClient {
   _RestClient(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'http://192.168.151.216:5000/';
+    baseUrl ??= 'http://178.62.253.125/node_one';
   }
 
   final Dio _dio;
@@ -50,19 +50,20 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AddTransactionPOJO> addTransaction(addTransactionPOJO) async {
+  Future<String> addTransaction(addTransactionPOJO) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(addTransactionPOJO.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AddTransactionPOJO>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/add_transaction',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = AddTransactionPOJO.fromJson(_result.data!);
+    final _result = await _dio.fetch<String>(_setStreamType<String>(
+        Options(method: 'POST', headers: _headers, extra: _extra)
+            .compose(_dio.options, '/add_transaction',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data!;
+    print("LT" +value.length.toString());
+
     return value;
   }
 
@@ -83,7 +84,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<CreateWalletPOJO> createWallet() async {
+  Future<CreateWalletPOJO> createWallet(number) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -91,7 +92,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<CreateWalletPOJO>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/create_wallet',
+                .compose(_dio.options, '/create_wallet/${number}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = CreateWalletPOJO.fromJson(_result.data!);
@@ -103,33 +104,88 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(nodeAddressPOJO.toJson());
+    final _data = nodeAddressPOJO;
     final _result = await _dio.fetch<String>(_setStreamType<String>(
         Options(method: 'POST', headers: _headers, extra: _extra)
             .compose(_dio.options, '/connect_node',
-            queryParameters: queryParameters, data: _data)
+                queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data!;
     return value;
   }
 
   @override
-  Future<NodeAddressPOJO> getConnectedNodes() async {
+  Future<AllAccountsPOJO> getAllAccounts() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NodeAddressPOJO>(
+        _setStreamType<AllAccountsPOJO>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/get_nodes',
-                queryParameters: queryParameters, data: _data)
+                .compose(_dio.options, '/get_user_accounts',
+                    queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NodeAddressPOJO.fromJson(_result.data!);
+    final value = AllAccountsPOJO.fromJson(_result.data!);
     return value;
   }
 
+  @override
+  Future<UnConfirmedTransactionsListPOJO> getAllTransactions() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<UnConfirmedTransactionsListPOJO>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/get_transactions',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    print("UnConfirmedTransactionsListPOJO" +_dio.options.baseUrl);
+    print("UnConfirmedTransactionsListPOJO" +_dio.options.queryParameters.toString());
+    print("UnConfirmedTransactionsListPOJO" +_dio.options.queryParameters.values.toString());
+    print("UnConfirmedTransactionsListPOJO" +_result.data!.values.toString());
+    print("UnConfirmedTransactionsListPOJO" +_result.realUri.toString());
+
+
+
+
+    final value = UnConfirmedTransactionsListPOJO.fromJson(_result.data!);
+    print("LG" +value.transactions.length.toString());
+    return value;
+  }
+
+  @override
+  Future<AllAccountsPOJO> getNodeAccounts() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AllAccountsPOJO>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/get_node_accounts',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = AllAccountsPOJO.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<String> clearBlockChain() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<String>(_setStreamType<String>(
+        Options(method: 'GET', headers: _headers, extra: _extra)
+            .compose(_dio.options, '/clear_blockchain',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data!;
+    return value;
+  }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&

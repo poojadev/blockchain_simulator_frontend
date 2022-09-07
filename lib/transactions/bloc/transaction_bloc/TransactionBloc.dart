@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:blockchain_world/transactions/model/AddTransactionPOJO.dart';
 
 import 'package:equatable/equatable.dart';
 
@@ -10,6 +11,7 @@ import '../transaction_repository/TransactionRepository.dart';
 class TransactionBloc
     extends Bloc<TransactionEvents, TransactionState> {
   final TransactionRepository _transactionRepository;
+  AddTransactionPOJO? addTransactionPOJO;
 
   TransactionBloc(this._transactionRepository)
       : super(TransactionInitial()) {
@@ -17,23 +19,20 @@ class TransactionBloc
       if (event is  GetTransactions) {
         print(event);
 
-        _transactionRepository.getTransactions(event.transactionStatusFlag);
+
+        _transactionRepository.getTransactionList();
 
       }
       // ignore: unnecessary_type_check
       else if(event is TransactionCreatedEvent){
         print("GetBlockEvent");
 
-        _transactionRepository.addTransactionToBlock(addTransactionPOJO);
+      //  _transactionRepository.addTransactionToBlockNode1(addTransactionPOJO);
 
 
       }
-      else if(event is GetNodeTransactions)
-        {
-          _transactionRepository.getNodeTransactions(event.nodePublicKay);
-        }
-
 
     });
   }
+
 }

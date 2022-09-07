@@ -23,30 +23,49 @@ part 'MineBlockPOJO.g.dart';
 class MineBlockPOJO
 {
 
-  late String hash;
-  late String previous_hash;
-  late int index;
-  late String timestamp;
-  late double proof;
-  late String message;
+  late String? hash;
+  late String? previous_hash;
+  late int? index;
+  late String? timestamp;
+  late double? nonce;
+  late String? message;
+  late String? node_wallet_key;
+
   late List<Transactions>transactions;
 
-  MineBlockPOJO(this.hash,this.previous_hash,this.message,this.timestamp,this.proof,this.index,this.transactions);
+  MineBlockPOJO(this.hash,this.previous_hash,this.message,this.timestamp,this.node_wallet_key,this.nonce,this.index,this.transactions);
   factory MineBlockPOJO.fromJson(Map<String, dynamic> json) => _$MineBlockPOJOFromJson(json);
   Map<String, dynamic> toJson() => _$MineBlockPOJOToJson(this);
 
 }
 @JsonSerializable()
-
 class Transactions
 {
-    late double amount;
-    late String receiver;
-    late String sender;
-    late String transactionId;
-    Transactions(this.amount,this.receiver,this.sender,this.transactionId);
+  late String signature;
+  late Tx tx;
+  Transactions(this.signature,this.tx);
 
-    factory Transactions.fromJson(Map<String, dynamic> json) => _$TransactionsFromJson(json);
-    Map<String, dynamic> toJson() => _$TransactionsToJson(this);
+  factory Transactions.fromJson(Map<String, dynamic> json) => _$TransactionsFromJson(json);
+  Map<String, dynamic> toJson() => _$TransactionsToJson(this);
+
+
+
+}
+
+
+
+@JsonSerializable()
+
+class Tx
+{
+
+  late int amount;
+  late String receiver;
+  late String sender;
+  late int is_mining_reward;
+  late int transaction_id;
+  Tx(this.amount,this.receiver,this.sender,this.is_mining_reward,this.transaction_id);
+  factory Tx.fromJson(Map<String, dynamic> json) => _$TxFromJson(json);
+  Map<String, dynamic> toJson() => _$TxToJson(this);
 
 }

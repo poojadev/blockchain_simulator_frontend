@@ -35,7 +35,9 @@ class BlockBloc
       else if(event is GetBlockEvent){
         print("GetBlockEvent");
 
-        _blockRepository.getBlocks();
+     //    _blockRepository.getBlocks();
+     // //   _blockRepository.replaceChain();
+     //    _blockRepository.getNodeTwoBlockChain();
 
         //  await _nodeRepository.signOut();
         // emit(NodeFailure());

@@ -36,7 +36,7 @@ class ArgumentsPOJO
   late int proof;
   late String  timestamp;
   late String current_block_hask;
-  late List<dynamic>transactions;
+  late List<Transactions>transactions;
 
   ArgumentsPOJO({required this.index,required this.message,required this. previous_hash,required this. current_block_hask,
   required this.proof,required this.timestamp,

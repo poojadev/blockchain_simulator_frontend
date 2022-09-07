@@ -17,7 +17,7 @@ class AccountsBloc
       : super(AccountInitialisation()) {
     on<AccountsEvents>((event, emit) async {
       if (event is AccountInit) {
-         _accountRepository.getNodes();
+        print("ACINIT");
 
 
        // UserModel user =
@@ -32,20 +32,21 @@ class AccountsBloc
        //    emit(NodeFailure());
        //  }
       }
-      else if(event is GetAccountCount){
-              _accountRepository.getNodeMinedBlockCount(event.nodeId);
+      else if(event is GetAllAccount){
+
+        print("GetAllAccount");
+
+        _accountRepository.getAllAccounts();
 
       }
       else
       if (event is AddAccountEvent) {
         print("here's the data : ${event.nodeLength}");
-        await _accountRepository.insertNodes(event.nodeLength);
 
       }
       else
       if (event is UpdateAccountTransaction) {
         print("here's the data : ${event.amount}");
-        await _accountRepository.updateWalletAmount(event.id,event.amount);
 
       }
 

@@ -2,6 +2,8 @@
 
 import 'dart:math';
 
+import 'package:blockchain_world/accounts/model/AllAccounts/AllAccountsPOJO.dart';
+import 'package:blockchain_world/transactions/model/AddTransactionPOJO.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,67 +16,23 @@ import '../../../model/CreateWalletPOJO.dart';
 
 var dio = Dio()..options.baseUrl = AppConstants.BASE_URL;
 RestClient restApiClient = RestClient(dio);
+AllAccountsPOJO? accountsPOJO;
 class AccountRepositoryImpl implements AccountRepository {
 
-  @override
-  Future<void>insertNodes(int nodeLength)async
-  {
-
-
-    var random = Random();
-
-
-    for(int i=0;i<nodeLength;i++)
-    {   
-
-    createWallet().then((value) async{
-        String documentId =
-        DateTime
-            .now()
-            .millisecondsSinceEpoch
-            .toString();
-        FirebaseFirestore.instance.collection(AppConstants.Node_Deatils)
-            .doc(documentId)
-            .set({
-          AppConstants.Private_Key:value.privateKey,
-          AppConstants.Public_key:value.publicKey,
-          AppConstants.Coins:value.amount,
-          AppConstants.Gas_limit:value.gaslimit,
-          AppConstants.Wallet_CretedOn: DateTime
-              .now(),
-          AppConstants.Transaction_Status_Flag:0,
-
-          AppConstants.Node_Number:documentId,
-          AppConstants.Block_Reward:0
-
-
-
-        });
-
-
-
-
-
-
-
-
-  });
-          }
-      }
 
   @override
-  Future<CreateWalletPOJO>createWallet()async
+  Future<CreateWalletPOJO>createWallet(int number)async
   {
     return  restApiClient
-        .createWallet();
+        .createWallet(number);
 
   }
 
   @override
-  Future<void>updateWalletAmount(String id,double amount)async
+  Future<void>updateWalletAmount(String id,int amount)async
   {
 
-    await FirebaseFirestore.instance.collection(AppConstants.Node_Deatils).doc(id).update({
+    await FirebaseFirestore.instance.collection(AppConstants.Account_Details).doc(id).update({
       AppConstants.Coins:amount
 
     });
@@ -82,43 +40,24 @@ class AccountRepositoryImpl implements AccountRepository {
 
   }
 
-  @override
-  Stream getNodes()
-  {
-    return  FirebaseFirestore.instance.collection(AppConstants.Node_Deatils).snapshots();
-
-  }
-  @override
-
-  Future<int>getNodeMinedBlockCount(String nodeId)
-  {
-    print("nodeId" +nodeId);
-     return FirebaseFirestore.instance.collection(AppConstants.Block_Details).
-     where(AppConstants.Node_Number,isEqualTo: nodeId).get().then((value){
-       return value.size;
-
-     });
-  }
 
   @override
+  Future getAllAccounts() async{
+    // TODO: implement getAllAccounts
+    return await restApiClient.getAllAccounts().then((value) {
+      print("restApiClient" +value.accounts.toString());
 
-  Future<void>getNodeMinedBlockDetails(String nodeId)
-  {
-    print("nodeId" +nodeId);
-    return FirebaseFirestore.instance.collection(AppConstants.Block_Details).
-    where(AppConstants.Node_Number,isEqualTo: nodeId).get();
+      accountsPOJO=value;
+    });
   }
 
 
 }
 abstract class AccountRepository {
-  Future<void>insertNodes(int nodeLength);
-  Stream getNodes();
-  Future<CreateWalletPOJO>createWallet();
-  Future<void>updateWalletAmount(String id,double amount);
-  Future<int>getNodeMinedBlockCount(String nodeId);
-  Future<void>getNodeMinedBlockDetails(String nodeId);
 
+  Future<CreateWalletPOJO>createWallet(int number);
+
+  Future getAllAccounts();
 
 
 }

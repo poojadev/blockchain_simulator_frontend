@@ -1,4 +1,6 @@
 // ignore: file_names
+import 'package:flutter/material.dart';
+
 class AppConstants {
   static const String noInfo = "No info available";
   // ignore: constant_identifier_names
@@ -16,7 +18,7 @@ class AppConstants {
    //static const String BASE_URL = "http://127.0.0.1:5000/";
   // ws://127.0.0.1:63740/NArcq-_mZbg=/ws
   //
-  static const String BASE_URL="http://192.168.151.216:5000/";
+  static const String BASE_URL="http://178.62.253.125/node_one";
 
   // 192.168.151.216
   // 169.254.89.51
@@ -25,8 +27,12 @@ class AppConstants {
   static const String CONNECT_NODE="/connect_node";
   static const String GET_CONNECTED_NODES="/get_nodes";
   static const String REPLACE_CHAIN="/replace_chain";
-  static const String CREATE_WALLET="/create_wallet";
-  static const String ADD_DOCUMENTS="/add_studentrecords";
+  static const String CREATE_WALLET="/create_wallet/";
+  static const String GET_USER_ACCOUNTS="/get_user_accounts";
+  static const String GET_NODE_ACCOUNTS="/get_node_accounts";
+  static const String GET_ALL_TRANSACTIONS="/get_transactions";
+  static const String GET_ALL_NODE_ACCOUNT="/get_node_accounts";
+  static const String CLEAR_BLOCKCHAIN="/clear_blockchain";
 
   static const String API_KEY="5AE042CE-D75C-4546-B417-77D962527CD2";
 
@@ -42,8 +48,11 @@ class AppConstants {
 
   static const String MINE_BLOCK="/mine_block";
   static const String ADD_TRANSACTION="/add_transaction";
-  static const String BASE_URL_NODE1 = "http://127.0.0.1:5001/";
-  static const String BASE_URL_NODE2 = "http://127.0.0.1:5002/";
+  static const String BASE_URL_NODE1 = "http://178.62.253.125/node_two";
+  static const String BASE_URL_NODE2 = "http://178.62.253.125/node_three";
+  //static const String BASE_URL_NODE = "178.62.253.125/node_one/";
+
+  //  static const String BASE_URL_NODE = "http://178.62.253.125/node_one";
 
   /*
      Firebase fields
@@ -55,7 +64,7 @@ class AppConstants {
        1=unconfirmed
        2=confirmed
    */
- static const String Node_Deatils="node_deatils";
+ static const String Account_Details="account_deatils";
  static const String Private_Key="private_key";
  static const String Public_key="public_key";
  static const String Coins="coins";
@@ -80,13 +89,6 @@ class AppConstants {
   static const String Transaction_Hash="transaction_hash";
 
 
- /**User Deatils   */
-  static const String User_Deatils="useDetails";
-  static const String User_id="user_id";
-  static const String User_emailId="email_id";
-  static const String User_name="user_name";
-  static const String User_Password="password";
-
 
 /** Block Details*
  *
@@ -100,7 +102,40 @@ static const String Block_CreatedOn="block_created_on";
 static const TransactionDetails="transactions";
 static const String Block_Reward="reward_amount";
 
+/*
+   Node details
+ */
+static const String Node_Deatils="node_details";
+static const String Node_Balanace="node_balance";
+static const String Node_Public_Key="node_pubic_key";
+static const String Node_Private_Key="node_private_key";
+static const String Node_Reward="node_reward";
+static const String Mined_Block_Count="mined_block_count";
+static const String Node_Name="node_name";
 
+  late BuildContext context;
 
+   AppConstants(this.context);
+   Future<void> startLoading() async {
+    return await showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const SimpleDialog(
+          elevation: 0.0,
+          backgroundColor: Colors.transparent, // can change this to your prefered color
+          children: <Widget>[
+            Center(
+              child: CircularProgressIndicator(color: Colors.black),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> stopLoading() async {
+    Navigator.of(context).pop();
+  }
 
 }

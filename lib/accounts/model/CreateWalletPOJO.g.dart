@@ -8,12 +8,12 @@ part of 'CreateWalletPOJO.dart';
 
 CreateWalletPOJO _$CreateWalletPOJOFromJson(Map<String, dynamic> json) =>
     CreateWalletPOJO(
-      (json['amount'] as num).toDouble(),
-      json['coinname'] as String,
-      json['message'] as String,
-      json['gaslimit'] as int,
-      json['privateKey'] as String,
-      json['publicKey'] as String,
+      json['amount'] as int?,
+      json['coinname'] as String?,
+      json['message'] as String?,
+      json['gaslimit'] as int?,
+      json['privateKey'] as String?,
+      json['publicKey'] as String?,
     );
 
 Map<String, dynamic> _$CreateWalletPOJOToJson(CreateWalletPOJO instance) =>
