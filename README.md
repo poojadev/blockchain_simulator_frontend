@@ -1,5 +1,6 @@
 User Manual:
-
+This is the frontend of blockchainn simulator.
+The actual code of simulator in python can be found here- https://github.com/poojadev/blockchain_simulator
 
 
 
