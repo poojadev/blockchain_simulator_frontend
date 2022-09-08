@@ -1,4 +1,8 @@
 User Manual:
+
+
+
+
 Accounts Tab 
 
 -	User can create new account by inputting the number of account he/she wants the create. When he click on create account new account’s will be created and displayed in Account List 
