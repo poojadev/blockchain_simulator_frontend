@@ -56,4 +56,3 @@ All these node will have exact same blockchain
 When user click on any block he will be able to see block details like 
 Hash, timestamp ,transaction list.
 
-![image](https://user-images.githubusercontent.com/6204693/189119247-70012096-1670-4757-924e-79d4c9c4bfc0.png)
